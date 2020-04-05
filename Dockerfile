@@ -2,7 +2,7 @@ FROM ruby:latest
 
 ENV GECKODRIVER_VERSION 0.26.0
 ENV NODEJS_VERSION 12.16.1
-ENV IMAGEMAGICK_VERSION 7.0.10-0
+ENV IMAGEMAGICK_VERSION 7.0.10-4
 
 RUN \
   wget https://github.com/ImageMagick/ImageMagick/archive/${IMAGEMAGICK_VERSION}.tar.gz && \
