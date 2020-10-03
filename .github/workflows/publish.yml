@@ -18,3 +18,9 @@ jobs:
           registry: docker.pkg.github.com
           repository: mfinelli/docker-ruby-imagemagick/ruby-imagemagick
           tag_with_ref: true
+      - uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: mfinelli/ruby-imagemagick
+          short-description: "ruby:latest with imagemagick7"
