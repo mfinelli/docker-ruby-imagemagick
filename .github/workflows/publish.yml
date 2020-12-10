@@ -25,9 +25,9 @@ jobs:
       - id: metadata
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images:
-            - mfinelli/ruby-imagemagick
-            - docker.pkg.github.com/docker-ruby-imagemagick/ruby-imagemagick
+          images: |
+            mfinelli/ruby-imagemagick
+            docker.pkg.github.com/docker-ruby-imagemagick/ruby-imagemagick
       - uses: docker/build-push-action@v2
         with:
           platforms: linux/amd64,linux/arm/v7,linux/arm64
