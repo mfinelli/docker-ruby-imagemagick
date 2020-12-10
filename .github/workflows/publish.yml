@@ -27,12 +27,14 @@ jobs:
         with:
           images: |
             mfinelli/ruby-imagemagick
-            docker.pkg.github.com/docker-ruby-imagemagick/ruby-imagemagick
+            docker.pkg.github.com/mfinelli/docker-ruby-imagemagick/ruby-imagemagick
       - uses: docker/build-push-action@v2
         with:
           platforms: linux/amd64,linux/arm/v7,linux/arm64
-          push: true
-          tags: ${{ steps.metadata.outputs.tags }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            mfinelli/ruby-imagemagick:latest
+            docker.pkg.github.com/mfinelli/docker-ruby-imagemagick/ruby-imagemagick:latest
       - uses: peter-evans/dockerhub-description@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
