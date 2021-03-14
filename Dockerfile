@@ -1,4 +1,4 @@
-FROM rust:slim as builder
+FROM rust:slim as geckodriver
 WORKDIR /geckodriver
 
 ARG GECKODRIVER_VERSION=0.29.0
@@ -20,7 +20,7 @@ ENV NODEJS_VERSION=$NODEJS_VERSION
 ARG IMAGEMAGICK_VERSION=7.0.11-3
 ENV IMAGEMAGICK_VERSION=$IMAGEMAGICK_VERSION
 
-COPY --from=builder /geckodriver/target/release/geckodriver /usr/local/bin
+COPY --from=geckodriver /geckodriver/target/release/geckodriver /usr/local/bin
 RUN \
   wget https://github.com/ImageMagick/ImageMagick/archive/${IMAGEMAGICK_VERSION}.tar.gz && \
   tar zxf ${IMAGEMAGICK_VERSION}.tar.gz && \
