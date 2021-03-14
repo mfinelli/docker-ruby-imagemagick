@@ -4,7 +4,7 @@ WORKDIR /geckodriver
 ARG GECKODRIVER_VERSION=0.29.0
 ENV GECKODRIVER_VERSION=$GECKODRIVER_VERSION
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y --no-install-recommends curl
 RUN \
   curl -LO https://github.com/mozilla/geckodriver/archive/v${GECKODRIVER_VERSION}.tar.gz && \
   tar zxf v${GECKODRIVER_VERSION}.tar.gz --strip-components=1 && \
