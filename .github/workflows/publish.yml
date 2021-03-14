@@ -1,9 +1,10 @@
 ---
-name: Mirror to GitHub
+name: Publish
 on:
   push:
     branches:
       - master
+  pull_request:
 
 jobs:
   main:
@@ -11,34 +12,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # - uses: docker/setup-qemu-action@v1
-      # - uses: docker/setup-buildx-action@v1
-      # - uses: docker/login-action@v1
-      #   with:
-      #     registry: docker.pkg.github.com
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
-      # - id: metadata
-      #   uses: crazy-max/ghaction-docker-meta@v1
-      #   with:
-      #     images: |
-      #       docker.pkg.github.com/mfinelli/docker-ruby-imagemagick/ruby-imagemagick
-      # - uses: docker/build-push-action@v2
-      #   with:
-      #     # platforms: linux/amd64,linux/arm/v7,linux/arm64
-      #     push: ${{ github.event_name != 'pull_request' }}
-      #     tags: |
-      #       docker.pkg.github.com/mfinelli/docker-ruby-imagemagick/ruby-imagemagick:latest
-      - uses: docker/build-push-action@v1
+      - uses: docker/setup-qemu-action@v1
+      - uses: docker/setup-buildx-action@v1
+      - id: docker
+        uses: crazy-max/ghaction-docker-meta@v1
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: mfinelli/docker-ruby-imagemagick/ruby-imagemagick
-          tag_with_ref: true
-      - uses: peter-evans/dockerhub-description@v2
+          images: |
+            mfinelli/ruby-imagemagick
+            ghcr.io/mfinelli/ruby-imagemagick
+      - uses: docker/login-action@v1
+        if: github.event_name != 'pull_request'
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: mfinelli/ruby-imagemagick
-          short-description: "ruby:latest with imagemagick7"
+      - uses: docker/login-action@v1
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - uses: docker/build-push-action@v2
+        with:
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.ref == 'refs/heads/master' }}
+          tags: |
+            mfinelli/ruby-imagemagick:latest
+            ghcr.io/mfinelli/ruby-imagemagick:latest
