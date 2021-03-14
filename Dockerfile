@@ -31,9 +31,19 @@ RUN \
   cd ../ && \
   rm -rf ImageMagick-${IMAGEMAGICK_VERSION} && \
   rm ${IMAGEMAGICK_VERSION}.tar.gz && \
-  wget https://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.xz && \
-  tar Jxf node-v$NODEJS_VERSION-linux-x64.tar.xz -C /usr/local --strip-components 1 && \
-  rm node-v$NODEJS_VERSION-linux-x64.tar.xz && \
+  case "$(dpkg --print-architecture)" in \
+    amd64) \
+      wget https://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.xz && \
+      tar Jxf node-v$NODEJS_VERSION-linux-x64.tar.xz -C /usr/local --strip-components 1 && \
+      rm node-v$NODEJS_VERSION-linux-x64.tar.xz \
+      ;; \
+    *) \
+      dpkg --print-architecture && \
+      wget https://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-arm64.tar.xz && \
+      tar Jxf node-v$NODEJS_VERSION-linux-arm64.tar.xz -C /usr/local --strip-components 1 && \
+      rm node-v$NODEJS_VERSION-linux-arm64.tar.xz \
+      ;; \
+  esac && \
   /usr/bin/magick --version && \
   /usr/local/bin/node --version && \
   /usr/local/bin/geckodriver --version
