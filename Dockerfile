@@ -13,6 +13,8 @@ RUN \
 
 FROM ruby:2.7
 
+LABEL org.opencontainers.image.source https://github.com/mfinelli/docker-ruby-imagemagick
+
 ARG NODEJS_VERSION=14.16.0
 ENV NODEJS_VERSION=$NODEJS_VERSION
 ARG IMAGEMAGICK_VERSION=7.0.11-3
