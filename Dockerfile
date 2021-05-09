@@ -4,8 +4,9 @@ WORKDIR /geckodriver
 ARG GECKODRIVER_VERSION=0.29.1
 ENV GECKODRIVER_VERSION=$GECKODRIVER_VERSION
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl
 RUN \
+  apt-get update && \
+  apt-get install -y --no-install-recommends curl && \
   curl -LO https://github.com/mozilla/geckodriver/archive/v${GECKODRIVER_VERSION}.tar.gz && \
   tar zxf v${GECKODRIVER_VERSION}.tar.gz --strip-components=1 && \
   cargo build --release && \
@@ -22,7 +23,7 @@ ENV IMAGEMAGICK_VERSION=$IMAGEMAGICK_VERSION
 
 COPY --from=geckodriver /geckodriver/target/release/geckodriver /usr/local/bin
 RUN \
-  wget https://github.com/ImageMagick/ImageMagick/archive/${IMAGEMAGICK_VERSION}.tar.gz && \
+  wget -nv https://github.com/ImageMagick/ImageMagick/archive/${IMAGEMAGICK_VERSION}.tar.gz && \
   tar zxf ${IMAGEMAGICK_VERSION}.tar.gz && \
   cd ImageMagick-${IMAGEMAGICK_VERSION} && \
   ./configure --prefix=/usr && \
@@ -33,13 +34,13 @@ RUN \
   rm ${IMAGEMAGICK_VERSION}.tar.gz && \
   case "$(dpkg --print-architecture)" in \
     amd64) \
-      wget https://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.xz && \
+      wget -nv https://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.xz && \
       tar Jxf node-v$NODEJS_VERSION-linux-x64.tar.xz -C /usr/local --strip-components 1 && \
       rm node-v$NODEJS_VERSION-linux-x64.tar.xz \
       ;; \
     *) \
       dpkg --print-architecture && \
-      wget https://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-arm64.tar.xz && \
+      wget -nv https://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-arm64.tar.xz && \
       tar Jxf node-v$NODEJS_VERSION-linux-arm64.tar.xz -C /usr/local --strip-components 1 && \
       rm node-v$NODEJS_VERSION-linux-arm64.tar.xz \
       ;; \
