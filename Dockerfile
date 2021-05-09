@@ -1,7 +1,7 @@
 FROM rust:slim as geckodriver
 WORKDIR /geckodriver
 
-ARG GECKODRIVER_VERSION=0.29.0
+ARG GECKODRIVER_VERSION=0.29.1
 ENV GECKODRIVER_VERSION=$GECKODRIVER_VERSION
 
 RUN apt-get update && apt-get install -y --no-install-recommends curl
@@ -11,13 +11,13 @@ RUN \
   cargo build --release && \
   ./target/release/geckodriver --version
 
-FROM ruby:2.7
+FROM ruby:3.0
 
 LABEL org.opencontainers.image.source https://github.com/mfinelli/docker-ruby-imagemagick
 
-ARG NODEJS_VERSION=14.16.0
+ARG NODEJS_VERSION=14.16.1
 ENV NODEJS_VERSION=$NODEJS_VERSION
-ARG IMAGEMAGICK_VERSION=7.0.11-3
+ARG IMAGEMAGICK_VERSION=7.0.11-11
 ENV IMAGEMAGICK_VERSION=$IMAGEMAGICK_VERSION
 
 COPY --from=geckodriver /geckodriver/target/release/geckodriver /usr/local/bin
