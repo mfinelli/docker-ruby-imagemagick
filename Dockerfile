@@ -1,7 +1,7 @@
 FROM rust:slim as geckodriver
 WORKDIR /geckodriver
 
-ARG GECKODRIVER_VERSION=0.29.1
+ARG GECKODRIVER_VERSION=0.30.0
 ENV GECKODRIVER_VERSION=$GECKODRIVER_VERSION
 
 RUN \
@@ -16,9 +16,9 @@ FROM ruby:3.0
 
 LABEL org.opencontainers.image.source https://github.com/mfinelli/docker-ruby-imagemagick
 
-ARG NODEJS_VERSION=14.17.0
+ARG NODEJS_VERSION=14.18.0
 ENV NODEJS_VERSION=$NODEJS_VERSION
-ARG IMAGEMAGICK_VERSION=7.0.11-14
+ARG IMAGEMAGICK_VERSION=7.1.0-9
 ENV IMAGEMAGICK_VERSION=$IMAGEMAGICK_VERSION
 
 COPY --from=geckodriver /geckodriver/target/release/geckodriver /usr/local/bin
