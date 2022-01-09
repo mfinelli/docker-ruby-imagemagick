@@ -16,9 +16,9 @@ FROM ruby:3.0
 
 LABEL org.opencontainers.image.source https://github.com/mfinelli/docker-ruby-imagemagick
 
-ARG NODEJS_VERSION=14.18.1
+ARG NODEJS_VERSION=14.18.2
 ENV NODEJS_VERSION=$NODEJS_VERSION
-ARG IMAGEMAGICK_VERSION=7.1.0-14
+ARG IMAGEMAGICK_VERSION=7.1.0-19
 ENV IMAGEMAGICK_VERSION=$IMAGEMAGICK_VERSION
 
 COPY --from=geckodriver /geckodriver/target/release/geckodriver /usr/local/bin
